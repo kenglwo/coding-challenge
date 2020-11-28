@@ -13,10 +13,9 @@
   </head>
   <body>
     <div id="heatmap1"></div>
-    <script type="module">
-      import { processData } from "./module.js";
-
-      const dataPath = "./temperature_daily.csv";
+    <script>
+      const dataPath =
+        "https://raw.githubusercontent.com/HKUST-VISLab/coding-challenge/master/temperature_daily.csv";
 
       // set the dimensions and margins of the graph
       var margin = { top: 50, right: 30, bottom: 30, left: 80 },
@@ -131,12 +130,37 @@
           }
         }
 
+        var tooltip = d3
+          .select("#heatmap1")
+          .append("div")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("padding", "5px");
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        var mouseover = function (d) {
+          tooltip.style("opacity", 1);
+        };
+        var mousemove = function (d) {
+          const text = `Date: ${d["year"]}-${d["month"]}; max: ${Math.max(
+            ...d["max"]
+          )} min: ${Math.min(...d["min"])}`;
+          tooltip
+            .html(text)
+            .style("left", d3.mouse(this)[0] + 70 + "px")
+            .style("top", d3.mouse(this)[1] + "px");
+        };
+        var mouseleave = function (d) {
+          tooltip.style("opacity", 0);
+        };
+
         svg
           .selectAll()
           .data(aggData)
-          //.data(aggData, function (d) {
-          //  return d.year + ":" + d.month;
-          //})
           .enter()
           .append("rect")
           .attr("x", function (d) {
@@ -150,7 +174,10 @@
           .style("fill", function (d) {
             const maxTemperature = Math.max(...d["max"]);
             return maxColor(maxTemperature);
-          });
+          })
+          .on("mouseover", mouseover)
+          .on("mousemove", mousemove)
+          .on("mouseleave", mouseleave);
       });
     </script>
   </body>
