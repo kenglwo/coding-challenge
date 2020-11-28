@@ -164,17 +164,18 @@
           .enter()
           .append("rect")
           .attr("x", function (d) {
-            return x(d.year);
+            return x(d.year) + 5;
           })
           .attr("y", function (d) {
-            return height - height / 12 - y(mapMonth(d.month));
+            return height - height / 12 - y(mapMonth(d.month)) + 7;
           })
-          .attr("width", x.bandwidth())
-          .attr("height", y.bandwidth())
+          .attr("width", x.bandwidth() - 10)
+          .attr("height", y.bandwidth() - 14)
           .style("fill", function (d) {
             const maxTemperature = Math.max(...d["max"]);
             return maxColor(maxTemperature);
           })
+          .attr("margin", "10px")
           .on("mouseover", mouseover)
           .on("mousemove", mousemove)
           .on("mouseleave", mouseleave);
