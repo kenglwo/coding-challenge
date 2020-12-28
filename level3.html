@@ -29,7 +29,9 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   </head>
   <body>
-    <svg class="m=5" width="960" height="600"></svg>
+		<div class="m-5">
+			<svg class="m=5" width="960" height="600"></svg>
+		</div>
     <script>
       const dataPath =
         "https://raw.githubusercontent.com/HKUST-VISLab/coding-challenge/master/HKUST_coauthor_graph.json";
@@ -62,7 +64,6 @@
           .enter()
           .append("line")
           .attr("stroke-width", function (d) {
-            // return Math.sqrt(d.value);
             return Math.sqrt(d.publications.length);
           });
 
@@ -70,7 +71,7 @@
           .append("g")
           .attr("class", "nodes")
           .selectAll("g")
-          .data(graph.nodes)
+					.data(graph.nodes.filter(node => node["dept"] == "CSE"))
           .enter()
           .append("g");
 
@@ -78,7 +79,7 @@
           .append("circle")
           .attr("r", 5)
           .attr("fill", function (d) {
-            return color(d.group);
+            return color(d.id);
           })
           .call(
             d3
@@ -88,17 +89,17 @@
               .on("end", dragended)
           );
 
-        var lables = node
+        // var lables = node
           // .append("text")
           // .text(function (d) {
           //   return d.id;
           // })
-          .attr("x", 6)
-          .attr("y", 3);
+          // .attr("x", 6)
+          // .attr("y", 3);
 
-        node.append("title").text(function (d) {
-          return d.id;
-        });
+        // node.append("title").text(function (d) {
+        //   return d.id;
+        // });
 
         simulation.nodes(graph.nodes).on("tick", ticked);
 
