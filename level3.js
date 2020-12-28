@@ -46,7 +46,7 @@ function Matrix(options) {
 
   const x = d3.scaleBand().domain(d3.range(numcols)).range([0, width]);
 
-  let y = d3.scaleBand().domain(d3.range(numrows)).range([0, height]);
+  const y = d3.scaleBand().domain(d3.range(numrows)).range([0, height]);
 
   const colorMap = d3
     .scaleLinear()
@@ -71,15 +71,17 @@ function Matrix(options) {
 
   cell
     .append('rect')
-    .attr('width', x.range())
-    .attr('height', y.range())
+    // .attr('width', x.range())
+    .attr('width', 35)
+    // .attr('height', y.range())
+    .attr('height', 35)
     .style('stroke-width', 0);
 
   cell
     .append('text')
     .attr('dy', '.32em')
-    .attr('x', x.range() / 2)
-    .attr('y', y.range() / 2)
+    .attr('x', 35 / 2)
+    .attr('y', 35 / 2)
     .attr('text-anchor', 'middle')
     .style('fill', (d, i) => (d >= maxValue / 2 ? 'white' : 'black'))
     .text((d, i) => d);
@@ -103,15 +105,18 @@ function Matrix(options) {
     .append('line')
     .style('stroke', 'black')
     .style('stroke-width', '1px')
-    .attr('x1', x.range() / 2)
-    .attr('x2', x.range() / 2)
+    // .attr('x1', x.range() / 2)
+    // .attr('x2', x.range() / 2)
+    .attr('x1', 35 / 2)
+    .attr('x2', 35 / 2)
     .attr('y1', 0)
     .attr('y2', 5);
 
   columnLabels
     .append('text')
     .attr('x', 0)
-    .attr('y', y.range() / 2)
+    // .attr('y', y.range() / 2)
+    .attr('y', 35 / 2)
     .attr('dy', '.82em')
     .attr('text-anchor', 'end')
     .attr('transform', 'rotate(-60)')
@@ -131,8 +136,10 @@ function Matrix(options) {
     .style('stroke-width', '1px')
     .attr('x1', 0)
     .attr('x2', -5)
-    .attr('y1', y.range() / 2)
-    .attr('y2', y.range() / 2);
+    // .attr('y1', y.range() / 2)
+    // .attr('y2', y.range() / 2);
+    .attr('y1', 35 / 2)
+    .attr('y2', 35 / 2);
 
   rowLabels
     .append('text')
@@ -177,10 +184,10 @@ function Matrix(options) {
     .style('fill', 'url(#gradient)')
     .attr('transform', `translate(0,${margin.top})`);
 
-  y = d3.scaleLinear().range([height, 0]).domain([minValue, maxValue]);
+  const y2 = d3.scaleLinear().range([height, 0]).domain([minValue, maxValue]);
 
   // const yAxis = d3.svg.axis().scale(y).orient('right');
-  // const yAxis = d3.axisLeft(y).orient('right');
+  // const yAxis = d3.axisLeft(y2).orient('right');
 
   // key
   //   .append('g')
