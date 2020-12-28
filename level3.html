@@ -35,26 +35,27 @@
         opacity: 0.1;
       }
 			.axis text {
-    font: 10px sans-serif;
-}
+				font: 10px sans-serif;
+			}
 
-.axis line, .axis path {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
+			.axis line, .axis path {
+					fill: none;
+					stroke: #000;
+					shape-rendering: crispEdges;
+			}
     </style>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="row m-5">
-          <svg id="directed" width="960" height="600"></svg>
-        </div>
+				<div class="col-md-6">
+          <svg id="directed" width="480" height="600"></svg>
+				</div>
+				<div class="col-md-6">
+          <svg id="matrix" width="480" height="600"></svg>
+				</div>
       </div>
-      <div class="row m-5">
-          <svg id="matrix" width="960" height="600"></svg>
-        </div>
       </div>
     </div>
     <script src="./level3.js"></script>
@@ -62,7 +63,7 @@
       const dataPath =
         "https://raw.githubusercontent.com/HKUST-VISLab/coding-challenge/master/HKUST_coauthor_graph.json";
 
-      const width = 960;
+      const width = 480;
       const height = 600;
 
       let svg = d3
