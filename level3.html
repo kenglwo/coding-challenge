@@ -25,13 +25,39 @@
         stroke: #fff;
         stroke-width: 1.5px;
       }
+      .background {
+        fill: #eee;
+      }
+
+      .highlight-bar {
+        fill: black;
+        stroke: white;
+        opacity: 0.1;
+      }
+			.axis text {
+    font: 10px sans-serif;
+}
+
+.axis line, .axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
     </style>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   </head>
   <body>
-		<div class="m-5">
-			<svg class="m=5" width="960" height="600"></svg>
-		</div>
+    <div class="container">
+      <div class="row m-5">
+          <svg id="directed" width="960" height="600"></svg>
+        </div>
+      </div>
+      <div class="row m-5">
+          <svg id="matrix" width="960" height="600"></svg>
+        </div>
+      </div>
+    </div>
+    <script src="./level3.js"></script>
     <script>
       const dataPath =
         "https://raw.githubusercontent.com/HKUST-VISLab/coding-challenge/master/HKUST_coauthor_graph.json";
@@ -39,7 +65,10 @@
       const width = 960;
       const height = 600;
 
-      let svg = d3.select("svg").attr("width", width).attr("height", height);
+      let svg = d3
+        .select("svg#directed")
+        .attr("width", width)
+        .attr("height", height);
       let color = d3.scaleOrdinal(d3.schemeCategory20);
 
       let simulation = d3
@@ -56,10 +85,13 @@
       d3.json(dataPath, function (error, graph) {
         if (error) throw error;
 
-				const nodesOfCSE = graph.nodes.filter(node => node["dept"] == "CSE");
-				const nodesOfCSEIds = nodesOfCSE.map(node => node["id"]);
-				const edgesOfCSE = graph.edges.filter(edge => nodesOfCSEIds.includes(edge["source"]) && nodesOfCSEIds.includes(edge["target"]));
-				console.log(edgesOfCSE);
+        const nodesOfCSE = graph.nodes.filter((node) => node["dept"] == "CSE");
+        const nodesOfCSEIds = nodesOfCSE.map((node) => node["id"]);
+        const edgesOfCSE = graph.edges.filter(
+          (edge) =>
+            nodesOfCSEIds.includes(edge["source"]) &&
+            nodesOfCSEIds.includes(edge["target"])
+        );
 
         var link = svg
           .append("g")
@@ -72,13 +104,13 @@
             // return Math.sqrt(d.publications.length);
             return 0.5;
           })
-					.attr("stroke", "#999");
+          .attr("stroke", "#999");
 
         var node = svg
           .append("g")
           .attr("class", "nodes")
           .selectAll("g")
-					.data(nodesOfCSE)
+          .data(nodesOfCSE)
           .enter()
           .append("g");
 
@@ -95,18 +127,6 @@
               .on("drag", dragged)
               .on("end", dragended)
           );
-
-        // var lables = node
-          // .append("text")
-          // .text(function (d) {
-          //   return d.id;
-          // })
-          // .attr("x", 6)
-          // .attr("y", 3);
-
-        // node.append("title").text(function (d) {
-        //   return d.id;
-        // });
 
         simulation.nodes(graph.nodes).on("tick", ticked);
 
@@ -131,6 +151,34 @@
             return "translate(" + d.x + "," + d.y + ")";
           });
         }
+
+
+
+				// matrix visualizaiton
+				 var correlationMatrix = [
+					[1, 0.3, 0, 0.8, 0, 0.2, 1, 0.5, 0, 0.75],
+					[0.3, 1, 0.5, 0.2, 0.4, 0.3, 0.8, 0.1, 1, 0],
+					[0, 0.5, 1, 0.4, 0, 0.9, 0, 0.2, 1, 0.3],
+					[0.8, 0.2, 0.4, 1, 0.3, 0.4, 0.1, 1, 0.2, 0.9],
+					[0, 0.4, 0, 0.3, 1, 0.1, 0.4, 0, 0.6, 0.7],
+					[0.2, 0.3, 0.9, 0.4, 0.1, 1, 0, 0.1, 0.4, 0.1],
+					[1, 0.8, 0, 0.1, 0.4, 0, 1, 0.5, 0, 1],
+					[0.5, 0.1, 0.2, 1, 0.1, 0, 0.5, 1, 0, 0.4],
+					[0, 1, 1, 0.2, 0.6, 0.4, 0, 0, 1, 0.6],
+					[0.75, 0, 0.3, 0.9, 0.7, 0.1, 1, 0.4, 0.6, 1]
+				];
+
+				var labels = ['Var 1', 'Var 2', 'Var 3', 'Var 4', 'Var 5', 'Var 6', 'Var 7', 'Var 8', 'Var 9', 'Var 10'];
+
+				Matrix({
+						container : '#matrix',
+						data      : correlationMatrix,
+						labels    : labels,
+						start_color : '#ffffff',
+						end_color : '#3498db'
+				});
+
+
       });
 
       function dragstarted(d) {
@@ -149,6 +197,7 @@
         d.fx = null;
         d.fy = null;
       }
+
     </script>
   </body>
 </html>
