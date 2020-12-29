@@ -88,11 +88,13 @@
 
         const nodesOfCSE = graph.nodes.filter((node) => node["dept"] == "CSE");
         const nodesOfCSEIds = nodesOfCSE.map((node) => node["id"]);
+				console.log(nodesOfCSEIds);
         const edgesOfCSE = graph.edges.filter(
           (edge) =>
             nodesOfCSEIds.includes(edge["source"]) &&
             nodesOfCSEIds.includes(edge["target"])
         );
+
 
         var link = svg
           .append("g")
@@ -154,6 +156,51 @@
         }
 
 
+				// data structure for matrix view
+				const collaborationData = []
+
+				for (let node of nodesOfCSE) {
+					let data = {};
+					data["id"] = node["id"];
+					data["collaboration"] = {};
+					nodesOfCSEIds.forEach((id) => data["collaboration"][id] = 0);
+					collaborationData.push(data);
+				}
+
+				const orderID = function (a, b) {
+					return a["id"] - b["id"]
+				}
+				collaborationData.sort(orderID)
+
+				// <!-- const collaborationData = [ -->
+				// <!-- 	{ -->
+				// <!-- 		"id": "a", -->
+				// <!-- 		"collaboration": { -->
+				// <!-- 			1: 1, -->
+				// <!-- 			2: 3 -->
+				// <!-- 		} -->
+				// <!-- 	}, -->
+
+
+				for (let edge of edgesOfCSE) {
+					const sourceID = edge["source"]["id"];
+					const targetID = edge["target"]["id"];
+					const collaborationNums = edge["publications"].length
+
+					collaborationData.map((node) => {
+						if(node["id"] === sourceID || node["id"] === targetID){
+							const collaborator = node["id"] === sourceID ? targetID : sourceID;
+							node["collaboration"][collaborator] = collaborationNums;
+						}
+					})
+				}
+
+					console.log("#########");
+					console.log(collaborationData);
+
+				const nameLabels = nodesOfCSE.map((node) => node.fullname);
+
+				// const correlationMatrix = []
 
 				// matrix visualizaiton
 				 var correlationMatrix = [
