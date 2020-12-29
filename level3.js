@@ -5,8 +5,8 @@ function Matrix(options) {
     bottom: 100,
     left: 100,
   };
-  const width = 350;
-  const height = 350;
+  const width = 400;
+  const height = 400;
   const { data } = options;
   const { container } = options;
   const labelsData = options.labels;
@@ -114,12 +114,12 @@ function Matrix(options) {
 
   columnLabels
     .append('text')
-    .attr('x', 0)
-    // .attr('y', y.range() / 2)
+    .attr('x', -8)
     .attr('y', 35 / 2)
-    .attr('dy', '.82em')
+    .attr('dy', '.42em')
     .attr('text-anchor', 'end')
-    .attr('transform', 'rotate(-60)')
+    .attr('transform', 'rotate(-90)')
+    .attr('font-size', '8px')
     .text((d, i) => d);
 
   const rowLabels = labels
@@ -144,9 +144,10 @@ function Matrix(options) {
   rowLabels
     .append('text')
     .attr('x', -8)
-    .attr('y', y.range() / 2)
-    .attr('dy', '.32em')
+    .attr('y', 35 / 2)
+    .attr('dy', '.52em')
     .attr('text-anchor', 'end')
+    .attr('font-size', '8px')
     .text((d, i) => d);
 
   const key = d3

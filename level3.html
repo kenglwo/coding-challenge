@@ -47,13 +47,13 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container m-0 p-0">
       <div class="row m-5">
 				<div class="col-md-6">
           <svg id="directed" width="480" height="600"></svg>
 				</div>
 				<div class="col-md-6">
-          <svg id="matrix" width="480" height="600"></svg>
+          <svg id="matrix" width="550" height="600"></svg>
 				</div>
       </div>
       </div>
@@ -88,7 +88,6 @@
 
         const nodesOfCSE = graph.nodes.filter((node) => node["dept"] == "CSE");
         const nodesOfCSEIds = nodesOfCSE.map((node) => node["id"]);
-				console.log(nodesOfCSEIds);
         const edgesOfCSE = graph.edges.filter(
           (edge) =>
             nodesOfCSEIds.includes(edge["source"]) &&
@@ -195,12 +194,18 @@
 					})
 				}
 
-					console.log("#########");
-					console.log(collaborationData);
+				console.log("#########");
+				// console.log(collaborationData);
+
+				const correlationMatrix2 = []
+				for (let node of collaborationData){
+					let collaborationArray = Object.values(node["collaboration"]);
+					correlationMatrix2.push(collaborationArray);
+				}
+				console.log(correlationMatrix2);
 
 				const nameLabels = nodesOfCSE.map((node) => node.fullname);
 
-				// const correlationMatrix = []
 
 				// matrix visualizaiton
 				 var correlationMatrix = [
@@ -220,8 +225,8 @@
 
 				Matrix({
 						container : '#matrix',
-						data      : correlationMatrix,
-						labels    : labels,
+						data      : correlationMatrix2,
+						labels    : nameLabels,
 						start_color : '#ffffff',
 						end_color : '#3498db'
 				});
